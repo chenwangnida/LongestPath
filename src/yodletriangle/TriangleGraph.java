@@ -44,30 +44,30 @@ public class TriangleGraph<V, E> extends SimpleDirectedWeightedGraph<V, E> imple
     }
 
     /**
-     * 
+     *
      * @return the apex of the triangle ie the first number
      */
     public V getApex() {
         return apexVertex;
     }
-    
+
     /**
-     * 
+     *
      * @return all vertices in the last (bottom) level or base of the triangle
      */
     public ArrayList<V> getLastLevel() {
         return lastLevel;
     }
-    
+
     /**
-     * 
+     *
      * @param f a file of integers in a triangle format
      * @return a graph representing the triangle
      * @throws FileNotFoundException
-     * @throws IOException 
+     * @throws IOException
      */
     public static TriangleGraph<GraphInteger, DefaultWeightedEdge> createTriangleGraph(File f) throws FileNotFoundException, IOException {
-        
+
         //instantiate what is returned
         TriangleGraph<GraphInteger, DefaultWeightedEdge> g;
         g = new TriangleGraph<>(DefaultWeightedEdge.class);
@@ -84,7 +84,7 @@ public class TriangleGraph<V, E> extends SimpleDirectedWeightedGraph<V, E> imple
         DefaultWeightedEdge tempEdge;
 
         int count = 0;
-        
+
         //parse through the file and add every integer as a vertex in the graph
         while (in.ready()) {
             previousLevel = currentLevel;
@@ -93,7 +93,7 @@ public class TriangleGraph<V, E> extends SimpleDirectedWeightedGraph<V, E> imple
             tokenizer = new StringTokenizer(text, " ");
             while (tokenizer.hasMoreTokens()) {
                 tempInteger = Integer.parseInt(tokenizer.nextToken());
-                
+
                 //every integer is IDed by when it was added to the vertex
                 //this ensures that every integer is still unique so that a graph can have duplicate integers as its vertices
                 tempGraphInteger = new GraphInteger(tempInteger, count++);
@@ -114,7 +114,7 @@ public class TriangleGraph<V, E> extends SimpleDirectedWeightedGraph<V, E> imple
             int levelIndex = 0;
             for (GraphInteger graphElement : previousLevel) {
                 tempEdge = g.addEdge(graphElement, currentLevel.get(levelIndex));
-                
+
                 //because we are using the Bellman Ford Shortest Path algorithm, use the negative of the receiver node's value as the edge weight
                 //Obviously the shortest path is the most negative!
                 g.setEdgeWeight(tempEdge, -currentLevel.get(levelIndex).getValue());
